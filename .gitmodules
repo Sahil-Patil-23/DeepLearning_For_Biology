@@ -1,0 +1,3 @@
+[submodule "dlfb-clone"]
+	path = dlfb-clone
+	url = https://github.com/deep-learning-for-biology/dlfb.git

@@ -1,0 +1,24 @@
+# Data and Embeddings 
+data/
+Proteins_my_models/protein_embeddings/
+Proteins_my_models/processed_data_final_merge/
+Proteins_my_models/processed_csvs/
+*.feather
+*.parquet
+*.csv
+*.tsv
+*.zip
+*.fasta
+
+# Environment
+.venv/
+venv/
+env/
+
+# System and IDE
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+
+# Models
+*.pth
