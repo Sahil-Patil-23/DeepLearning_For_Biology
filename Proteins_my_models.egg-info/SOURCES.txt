@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+Proteins_my_models/aa_embedding.py
+Proteins_my_models/merge_aa_embedding.py
+Proteins_my_models.egg-info/PKG-INFO
+Proteins_my_models.egg-info/SOURCES.txt
+Proteins_my_models.egg-info/dependency_links.txt
+Proteins_my_models.egg-info/top_level.txt

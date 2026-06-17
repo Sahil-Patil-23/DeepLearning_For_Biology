@@ -22,3 +22,6 @@ __pycache__/
 
 # Models
 *.pth
+
+# Proteins_my_models Package
+.egg-info/

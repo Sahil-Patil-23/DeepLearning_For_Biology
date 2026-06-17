@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Proteins_my_models"
+version = "0.1.0"
+description = "My protein deep learning project"
+dependencies = []
+
+[tool.setuptools]
+packages = ["Proteins_my_models"]
