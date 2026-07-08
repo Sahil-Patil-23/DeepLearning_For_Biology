@@ -18,7 +18,7 @@ device = torch.device("mps")
 model.to(device).eval()
 
 # Directories of importance
-csv_dir = "processed_csvs/"
+csv_dir = "processed_csvs(human)/"
 embeddings_dir = "protein_embeddings/"
 os.makedirs(embeddings_dir, exist_ok=True)
 
