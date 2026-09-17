@@ -1,6 +1,9 @@
 README.md
 pyproject.toml
+Proteins_my_models/MMseqs2_Protein_Clustering.py
+Proteins_my_models/__init__.py
 Proteins_my_models/aa_embedding.py
+Proteins_my_models/aa_embedding_all.py
 Proteins_my_models/merge_aa_embedding.py
 Proteins_my_models.egg-info/PKG-INFO
 Proteins_my_models.egg-info/SOURCES.txt

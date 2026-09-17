@@ -1,14 +1,12 @@
 # Data and Embeddings 
-data/
-Proteins_my_models/protein_embeddings/
-Proteins_my_models/processed_data_final_merge/
-Proteins_my_models/processed_csvs/
+Proteins_my_models/My_Data/
 *.feather
 *.parquet
 *.csv
 *.tsv
 *.zip
 *.fasta
+clusterRes_DB*
 
 # Environment
 .venv/
@@ -24,4 +22,4 @@ __pycache__/
 *.pth
 
 # Proteins_my_models Package
-.egg-info/
+*.egg-info/
