@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from NeuralNetworks.ResidualLayer import ResidualBlock
+from Proteins_my_models.NeuralNetworks.ResidualLayer import ResidualBlock
 
 
 class LabelAttentionHeader(nn.Module):

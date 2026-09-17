@@ -3,9 +3,8 @@ import glob
 import os
 from tqdm.auto import tqdm
 
-# Update this to your actual folder
-embeddings_dir = "protein_embeddings/"
-output_dir = "processed_data_final_merge/"
+embeddings_dir = "My_Data/protein_embeddings/"
+output_dir = "My_Data/processed_data_final_merge/"
 os.makedirs(output_dir, exist_ok=True)
 
 # The suffix the library added to your files

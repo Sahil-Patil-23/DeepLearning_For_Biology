@@ -68,7 +68,7 @@ def esmc_get_mean_embeddings(batch_seqs, tokenizer, model, device):
                 LogitsConfig(sequence=True, return_embeddings=True)
             )
             
-        # 4. Extract embeddings tensor (Shape: 1, sequence_length, 960)
+        # 4. Extract embeddings tensor (Shape: 1, sequence_length, 1152)
         embeddings = logits_output.embeddings 
         
         # 5. Average across sequence length (ignoring special start <bos> and end <eos> tokens)
@@ -84,38 +84,39 @@ def esmc_get_mean_embeddings(batch_seqs, tokenizer, model, device):
 dlfb.proteins.dataset.get_mean_embeddings = esmc_get_mean_embeddings
 
 
-print("Loading ESMC-300M Model...")
+print("Loading ESMC-600M Model...")
 
-# Ensure model is ready on Mac GPU
-device = torch.device("mps")
-# device = "cpu"
-model_name = "esmc_300m"
+# Ensure model is ready on Nvidia RTX
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model_name = "esmc_600m"
 model_client = ESMC.from_pretrained(model_name=model_name).to(device)
-model_client.name_or_path = "esmc_300m"
+model_client.name_or_path = "esmc_600m"
 tokenizer = model_client.tokenizer
 
 # Directories of importance
-csv_dir = "processed_csvs(all)/"
-embeddings_dir = "protein_embeddings(all)/"
+data_dir = "../mmseq2_processed_data/"
+embeddings_dir = "../protein_embeddings(all)/"
 os.makedirs(embeddings_dir, exist_ok=True)
 
 CHUNK_SIZE = 5000
 
 for split in ["train", "valid", "test"]:
 
-    file_path = os.path.join(csv_dir, f"{split}_sequenced_df.csv")
+    file_path = os.path.join(data_dir, f"{split}_aa_data.parquet")
 
     if not os.path.exists(file_path):
         print(f"Skipping {split} data, file not found")
         continue
 
-    df = pd.read_csv(file_path, chunksize=CHUNK_SIZE)
-    # num_chunks = int(np.ceil(len(df) / CHUNK_SIZE))
 
-    print(f"🎬 Processing {split} ...")
+    df = pd.read_parquet(file_path)
+    df = df.drop_duplicates(subset="EntryID").reset_index(drop=True)
+    num_chunks = int(np.ceil(len(df) / CHUNK_SIZE))
+
+    print(f"🎬 Processing {split}")
 
 
-    for i, chunk_df in enumerate(df):
+    for i in tqdm(range(num_chunks), desc=f"Chunks of {split}"):
         chunk_prefix = os.path.join(embeddings_dir, f"{split}_chunk_{i:04d}")
 
         # Construct the ACTUAL filename the library creates
@@ -126,6 +127,9 @@ for split in ["train", "valid", "test"]:
         if os.path.exists(actual_file_path) and os.path.getsize(actual_file_path) > 0:
             print(f"Skipping chunk #{i} as it has been processed before!")
             continue 
+
+        start, end = i * CHUNK_SIZE, min((i + 1) * CHUNK_SIZE, len(df))
+        chunk_df = df.iloc[start : end ]
         
         # Generate and Store
         store_sequence_embeddings(
@@ -135,7 +139,7 @@ for split in ["train", "valid", "test"]:
             model=model_client,
         )
         
-        if device == "mps":
-            torch.mps.empty_cache()
+        if device == "cuda":
+            torch.cuda.empty_cache()
 
-print("🏁 ALL DONE! Your Mac deserves a break.")
+print("🏁 ALL DONE! Your machine deserves a break.")

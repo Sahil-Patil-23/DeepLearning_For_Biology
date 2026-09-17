@@ -13,13 +13,13 @@ model_checkpoint = "facebook/esm2_t30_150M_UR50D"
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 model = EsmModel.from_pretrained(model_checkpoint)
 
-# Ensure model is ready on Mac GPU
-device = torch.device("mps")
+# Ensure model is ready on GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device).eval()
 
 # Directories of importance
-csv_dir = "processed_csvs(human)/"
-embeddings_dir = "protein_embeddings/"
+csv_dir = "../processed_csvs(human)/"
+embeddings_dir = "../protein_embeddings/"
 os.makedirs(embeddings_dir, exist_ok=True)
 
 CHUNK_SIZE = 5000
@@ -65,6 +65,6 @@ for split in ["train", "valid", "test"]:
         
     # Periodic Memory Flush
     del df
-    torch.mps.empty_cache()
+    torch.cuda.empty_cache()
 
-print("🏁 ALL DONE! Your Mac deserves a break.")
+print("🏁 ALL DONE! Your machine deserves a break.")
